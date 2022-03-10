@@ -10,6 +10,7 @@ public class BaekJoon1003 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int TC = Integer.parseInt(br.readLine());
 		zero=new int[41]; one=new int[41];
+		arr = new int[TC];
 		for(int i=0; i<TC; i++) {
 			arr[i] = Integer.parseInt(br.readLine());	
 		}
