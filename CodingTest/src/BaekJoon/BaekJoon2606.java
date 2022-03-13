@@ -26,7 +26,7 @@ public class BaekJoon2606 {
 			arr[x][y] = 1;
 			arr[y][x] = 1;
 		}
-		bfs(1); // 1과 연결된 첫 컴퓨터부터 bfs 탐색 시작
+		bfs(1); // 1과 연결된 컴퓨터부터 bfs 탐색 시작
 		System.out.println(cnt);
 	}
 	static void bfs(int x) {
