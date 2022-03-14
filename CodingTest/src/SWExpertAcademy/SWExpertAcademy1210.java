@@ -17,16 +17,16 @@ public class SWExpertAcademy1210 {
 
 		TC = 10;
 		for (int tc = 1; tc <= TC; tc++) {
-			sc.nextInt(); // tc¹øÈ£°¡ ±»ÀÌ ÀÔ·ÂÀ¸·Î µé¾î¿È. ¾È¾µ°ÅÁö¸¸ ¹Þ±ä ÇØ¾ßÇÔ
+			sc.nextInt(); // tc ë²ˆí˜¸ê°€ êµ³ì´ ìž…ë ¥ìœ¼ë¡œ ë“¤ì–´ì˜´. ì•ˆì“¸ê±°ì§€ë§Œ ë°›ì•„ì¤Œ
 
 			ans = -1;
 			map = new int[100][100];
-			nowi = nowj = nexti = nextj = -1; // À¯È¿ÇÏÁö ¾ÊÀº °ªÀ¸·Î ÃÊ±âÈ­ÇÏ°í ¾²±â
+			nowi = nowj = nexti = nextj = -1; // ì´ˆê¸°í™”
 
 			for (int i = 0; i < 100; i++) {
 				for (int j = 0; j < 100; j++) {
 					map[i][j] = sc.nextInt();
-					if (map[i][j] == 2) { // ¹Ù´Ú Ãâ¹ßÁ¡
+					if (map[i][j] == 2) { // ë°”ë‹¥ ì¶œë°œì 
 						nowi = i;
 						nowj = j;
 					}
@@ -35,19 +35,19 @@ public class SWExpertAcademy1210 {
 
 			while (true) {
 				map[nowi][nowj] = 9;
-				for (int d = 0; d < 3; d++) { // 3°³ ¹æÇâÁß ÀÌµ¿°¡´ÉÇÑ ¿·Ä­ Ã£¾Æ¼­ ÇöÀçÁÂÇ¥ º¯°æ
+				for (int d = 0; d < 3; d++) { // 3ê°œ ë°©í–¥ ì¤‘ ì´ë™ ê°€ëŠ¥í•œ ì˜† ì¹¸ ì°¾ì•„ì„œ í˜„ìž¬ ì¢Œí‘œ ë³€ê²½
 					nexti = nowi + di[d];
 					nextj = nowj + dj[d];
 
 					if (nexti >= 0 && nexti < 100 && nextj >= 0 && nextj < 100 && map[nexti][nextj] == 1) {
 						nowi = nexti;
 						nowj = nextj;
-						break; // ÁÂ, ¿ì, »ó ¼ø¼­·Î Å½»öÁß. ÁÂ, ¿ì Áß¿¡ ÀÌµ¿°¡´ÉÇÏ¸é ¹Ù·Î ÀÌµ¿ÇÏ°í À§·Î´Â ¾È°¡¾ßÇÔ.
+						break; // ì¢Œ, ìš°, ìƒ ìˆœì„œë¡œ íƒìƒ‰ì¤‘. ì¢Œ, ìš° ì¤‘ì— ì´ë™ ê°€ëŠ¥í•˜ë©´ ë°”ë¡œ ì´ë™í•˜ê³  ìœ„ë¡œëŠ” ì•ˆ ê°€ì•¼í•¨.
 					}
 				}
-				if(nowi == 0) { // ²À´ë±â µµÂø!
-					ans = nowj; // ÇöÀç ¿­¹øÈ£°¡ ´ä!
-					break; // while Á¾·á!
+				if(nowi == 0) { // ê¼­ëŒ€ê¸° ë„ì°©!
+					ans = nowj; // í˜„ìž¬ ì—´ë²ˆí˜¸ê°€ ë‹µ!
+					break; // while ì¢…ë£Œ!
 				}
 			}
 			
