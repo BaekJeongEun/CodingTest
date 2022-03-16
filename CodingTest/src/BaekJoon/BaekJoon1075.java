@@ -22,5 +22,4 @@ public class BaekJoon1075 {
 		}
 		System.out.format("%02d", (N % 100));
 	}
-
 }
