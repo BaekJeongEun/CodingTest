@@ -10,8 +10,8 @@ public class BaekJoon_star {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
 		
-		for(int i=1; i<=9; i++) {
-			System.out.println(N+" * "+i+" = "+(N*i));
+		for(int i=1; i<=N; i++) {
+			System.out.println(i);
 		}
 		
 //		for(int i=0; i<N; i++) {
