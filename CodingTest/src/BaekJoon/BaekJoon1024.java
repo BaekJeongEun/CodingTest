@@ -1,0 +1,40 @@
+package BaekJoon;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+
+public class BaekJoon1024 {
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        String[] sArr = br.readLine().split(" ");
+        long N = Long.valueOf(sArr[0]);
+        long L = Long.valueOf(sArr[1]);
+        boolean flag = true;
+    
+        while(L <= 100){
+            long start = N / L - (L - 1) / 2;
+            if(start < 0)
+                break;
+                
+            if(N == (start * 2 + L - 1) * L / 2){
+                for(long i = 0; i < L; i++)
+                    bw.write(start + i + " ");
+                flag = false;
+                break;
+            }
+            
+            L += 1;
+        }
+        
+        if(flag)
+            bw.write("-1");
+            
+        bw.write("\n");
+        bw.flush();
+	}
+}
