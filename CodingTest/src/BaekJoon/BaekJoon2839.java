@@ -19,8 +19,8 @@ public class BaekJoon2839 {
 		
 		int i, j, count=-1;
 		
-		for(i=0; i<= max3 && count==-1; i++) {
-			for(j=max5; j>=0; j--) {
+		for(j=max5; j>=0 && count==-1; j--) {
+			for(i=0; i<= max3; i++) {
 				if(i*3 + j*5 == N) {
 					count = i+j;
 					break;
