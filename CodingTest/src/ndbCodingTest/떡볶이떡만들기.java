@@ -29,7 +29,7 @@ public class 떡볶이떡만들기 {
 				sum += arr[i]-mid;
 			}
 		}
-		if(sum == m) return mid;
+		if(sum == m) return mid; // 목표치에 다다르면 현재 절단기 길이 반환
 		if(sum<m) return binary(start, mid-1);
 		else return binary(mid+1, end);
 	}
