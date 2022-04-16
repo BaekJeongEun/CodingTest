@@ -14,7 +14,7 @@ public class BaekJoon3052 {
 		int sum=0;
 		for(int i=0; i<10; i++) {
 			int n = Integer.parseInt(br.readLine());
-			int remain = n%42;
+			int remain = n % 42;
 			System.out.println(remain);
 			if(arr[remain]==0) {
 				sum++;
