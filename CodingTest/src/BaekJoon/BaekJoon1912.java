@@ -24,6 +24,6 @@ public class BaekJoon1912 {
 			dp[i] = Math.max(dp[i - 1] + arr[i], arr[i]);
 			max_val = Math.max(max_val, dp[i]);
 		}
-		System.out.println(max_val+"");
+		System.out.println(max_val);
 	}
 }
