@@ -9,7 +9,6 @@ public class BaekJoon2156 {
 	public static void main(String[] args) throws IOException {
 		Scanner in = new Scanner(System.in);
 		int N = in.nextInt();
-		StringTokenizer st;
 		int arr[] = new int[N+1];
 		dp = new int[N+1];
 		for(int i=1; i<=N; i++) {
