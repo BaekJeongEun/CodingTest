@@ -1,4 +1,5 @@
 package Programmers;
+// 두 수 뽑아서 더하기
 import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
