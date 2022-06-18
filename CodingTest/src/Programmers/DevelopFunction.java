@@ -6,37 +6,40 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class DevelopFunction {
+	static Queue<Integer> queue = new LinkedList();
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(solution(new int[] {95, 90, 99, 99, 80, 99}, new int[] {1,1,1,1,1,1})));
+		System.out.println(Arrays.toString(solution(new int[] {20, 99, 93, 30, 55, 10}, new int[] {5, 10, 1, 1, 30, 5})));
 	}
 
 	public static int[] solution(int[] progresses, int[] speeds) {
-		int[] temp = new int[100]; //작업의 개수는 100개 이하이므로 100으로 선언
-        int day = 0; //temp에 적용할 배포일 수
-        
-        for(int i=0; i<progresses.length; i++){
-            while(progresses[i] + (speeds[i] * day) < 100){
-                day++;
-            }
-            temp[day]++;
+        ArrayList<Integer> arr = new ArrayList<>();
+		int[] answer = {};
+        for(int i=0; i<progresses.length; i++) {
+        	int remain = (100-progresses[i])/speeds[i];
+        	remain = (100-progresses[i])%speeds[i]==0? remain : remain + 1; // 채워야 하는 업무량
+        	//System.out.println(remain);
+        	queue.add(remain);
+        }
+        int stored_day=0, day=0;
+        while(!queue.isEmpty()) {
+        	int now = queue.poll(); // 현재 가장 맨 앞, 채워야 하는 업무량
+        	int cnt=1;
+        	int size = queue.size();
+        	for(int i=0; i<size; i++) {
+        		if(now >= queue.peek()) {
+        			queue.poll();
+        			cnt++;
+        		}
+        		else {
+        			break;
+        		}
+        	}
+        	arr.add(cnt);
         }
         
-        int count = 0;
-        
-        for(int n : temp){//temp배열 값을 하나식 n에 적용
-            if(n != 0){ //배열 값이 0이 아니라면
-                count ++; //count 증가
-            }
-        }
-        
-        int[] answer = new int[count]; //답을 리턴하기 위한 배열 answer 선언
-       
-        count = 0; //count 0 초기화
-        for(int n : temp){
-            if(n != 0){
-                answer[count++] = n; //answer 배열에 temp 값 넣기
-            }
-        }
+        int size=0;
+        answer = new int[arr.size()];
+        for(int temp : arr){ answer[size++] = temp;}
         
         return answer;
     }
