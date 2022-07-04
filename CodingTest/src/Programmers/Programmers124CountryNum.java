@@ -1,6 +1,6 @@
 package Programmers;
 
-public class Programmers124CountryNum {
+public class Programmers124CountryNum { // 124 나라
 
 	public static void main(String[] args) {
 		System.out.println(solution(4));
