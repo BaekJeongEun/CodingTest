@@ -15,7 +15,6 @@ public class Tuple {
 	public static int[] solution(String s) {
 		int[] answer = null;
 		LinkedHashSet<Integer> map = new LinkedHashSet<>();
-		ArrayList<Integer> list = new ArrayList<>();
 		s = s.substring(1, s.length() - 1);
 		String arr[] = s.split("\\}");
 		Arrays.sort(arr, new Comparator<String>() {
