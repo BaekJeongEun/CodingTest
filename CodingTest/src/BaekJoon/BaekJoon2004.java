@@ -25,7 +25,9 @@ public class BaekJoon2004 { // 조합 0의 개수 (S2)
 			cnt += n/loop;
 			n /= loop;
 		}
-		
+		//for(long i=loop; i<=n; i*=loop) {
+		//	cnt += n/i;
+		//}
 		return cnt;
 	}
 	
