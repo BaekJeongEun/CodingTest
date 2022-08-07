@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.StringTokenizer;
 
-public class BaekJoon11403 { // 경로 찾기
+public class BaekJoon11403 { // 경로 찾기 (S1)
 	static int N;
 	static int[][] arr;
 	static int[][] result;
@@ -31,7 +31,6 @@ public class BaekJoon11403 { // 경로 찾기
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<N; j++) {
 				if(arr[i][j] == 1) {
-					result[i][j]=1;
 					dfs(i, j);
 				}
 			}
@@ -47,7 +46,7 @@ public class BaekJoon11403 { // 경로 찾기
 	
 	static void dfs(int start, int idx) {
 		for(int i=0; i<N; i++) {
-			if(arr[idx][i]==1 && result[start][i]==0) {
+			if(arr[idx][i]==1) {
 				result[start][i] = 1;
 				dfs(start, i);
 			}
