@@ -1,44 +1,62 @@
 package SWExpertAcademy;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class SWExpertAcademy9229 {
-	static int N, M, ans=-1;
+public class SWExpertAcademy9229 { // 한빈이와 Spot Mart (D3)
+
+	static int N, M, total;
 	static int[] arr;
-	
+	static boolean[] visit;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringBuilder sb = new StringBuilder();
+
 		int TC = Integer.parseInt(br.readLine());
-		
+		StringTokenizer st;
 		for(int tc=1; tc<=TC; tc++) {
-			StringTokenizer st = new StringTokenizer(br.readLine());
+			st = new StringTokenizer(br.readLine());
 			N = Integer.parseInt(st.nextToken());
 			M = Integer.parseInt(st.nextToken());
-			st = new StringTokenizer(br.readLine());
+			
+			total = 0;
 			arr = new int[N];
-			for(int n=0; n<N; n++) {
-				arr[n] = Integer.parseInt(st.nextToken());
+			visit = new boolean[N];
+
+			st = new StringTokenizer(br.readLine());
+			for(int i=0; i<N; i++) {
+				arr[i] = Integer.parseInt(st.nextToken());
 			}
-			ans = -1;
-			comb(0, 0, 0);
-			System.out.println("#"+tc+" "+ans);
+			
+			recur(0, 0, 0); // idx, cnt, weight
+			total = (total==0)?-1:total;
+			sb.append("#").append(tc).append(" ").append(total).append("\n");
 		}
+		bw.write(sb.toString());
+		bw.flush();
+		bw.close();
 	}
-	static void comb(int cnt, int idx, int sum) {
-		if(sum > M)
-		{
-			return;
-		}
+	private static void recur(int idx, int cnt, int weight) {
 		if(cnt == 2) {
-			ans = Math.max(ans, sum);
+			if(weight <= M) {
+				total = Math.max(total, weight);
+			}
 			return;
 		}
-		if(idx >= N) return;
-		comb(cnt+1, idx+1, sum+arr[idx]);
-		comb(cnt, idx+1, sum);
+		for(int i=idx; i<N; i++) {
+			if(visit[i]) continue;
+			
+			visit[i] = true;
+			weight += arr[i];
+			recur(i+1, cnt+1, weight);
+			visit[i] = false;
+			weight -= arr[i];
+		}
 	}
+
 }
