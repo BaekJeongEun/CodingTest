@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class BaekJoon1010 {
+public class BaekJoon1010 { // 다리 놓기(S5)
 
 	static int[][] memo; // 여러 번 중복 호출 방지를 위해 nCr 값을 저장
 	public static void main(String[] args) throws IOException{
