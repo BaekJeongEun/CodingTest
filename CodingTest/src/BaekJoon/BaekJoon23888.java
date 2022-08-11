@@ -29,18 +29,26 @@ public class BaekJoon23888 { // 등차수열과 쿼리(S1)
 				long tmp1 = r * (2 * a + (r - 1) * d) / 2;
 				long tmp2 = (l - 1) * (2 * a + (l - 2) * d) / 2;
 				result = tmp1 - tmp2;
-			}else { // 최대공약수
-				while(d!=0) {
-					long temp = a%d;
-					a = d;
-					d = temp;
+			}else if(condition==2) { // 최대공약수
+				if(l==r) {
+					result = a+(l-1)*d;
+				}else {
+					result = gcd(a, d);
 				}
-				result = a;
 			}
 			sb.append(result).append("\n");
 		}
 		bw.write(sb.toString());
 		bw.flush();
 		bw.close();
+	}
+	
+	static long gcd(long a, long d) {
+		while(d!=0) {
+			long temp = a%d;
+			a = d;
+			d = temp;
+		}
+		return a;
 	}
 }
