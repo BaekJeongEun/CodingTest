@@ -15,5 +15,4 @@ public class BaekJoon15996 { //팩토리얼 나누기 (S4)
 		}
 		System.out.println(cnt);
 	}
-
 }
