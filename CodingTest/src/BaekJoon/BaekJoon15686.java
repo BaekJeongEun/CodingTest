@@ -12,6 +12,7 @@ public class BaekJoon15686 { // 치킨 배달 (G5)
 	static int[][] arr;
 	static ArrayList<Point> list = new ArrayList<>();
 	static ArrayList<Point> house = new ArrayList<>();
+	static Point[] pickList;
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,6 +22,7 @@ public class BaekJoon15686 { // 치킨 배달 (G5)
 		M = Integer.parseInt(st.nextToken());
 		
 		arr = new int[N][N];
+		pickList = new Point[M];
 		for(int i=0; i<N; i++) {
 			st= new StringTokenizer(br.readLine());
 			for(int j=0; j<N; j++) {
@@ -34,28 +36,27 @@ public class BaekJoon15686 { // 치킨 배달 (G5)
 			}
 		}
 		
-		comb(0, 0, new ArrayList<>());
+		comb(0, 0);
 		System.out.println(min);
 	}
 	
-	private static void comb(int idx, int cnt, ArrayList<Point> pickList) {
+	private static void comb(int idx, int cnt) {
 		if(cnt == M) {
-			checkDist(pickList);
+			checkDist();
 			return;
 		}
 		for(int i=idx; i<list.size(); i++) {
-			pickList.add(list.get(i));
-			comb(i+1, cnt+1, pickList);
-			pickList.remove(list.get(i));
+			pickList[cnt] = list.get(i);
+			comb(i+1, cnt+1);
 		}
 	}
 
-	private static void checkDist(ArrayList<Point> pickList) {
+	private static void checkDist() {
 		int sum = 0;
 		for(int h=0; h<house.size(); h++) {
 			int dist = Integer.MAX_VALUE;
-			for(int l = 0; l<pickList.size(); l++) {
-				dist = Math.min(dist, Math.abs(pickList.get(l).x-house.get(h).x)+Math.abs(pickList.get(l).y-house.get(h).y));
+			for(int l = 0; l<pickList.length; l++) {
+				dist = Math.min(dist, Math.abs(pickList[l].x-house.get(h).x)+Math.abs(pickList[l].y-house.get(h).y));
 			}
 			sum += dist;
 		}
