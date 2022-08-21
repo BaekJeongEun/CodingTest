@@ -1,35 +1,42 @@
 package BaekJoon;
 
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 class Main {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		int K = sc.nextInt();
-		long N = sc.nextLong();
-		long[] arr = new long[K];
-		long max = 0;
-		for (int i = 0; i < K; i++) {
-			arr[i] = sc.nextLong();
-			max = Math.max(max, arr[i]);
-		} // 이분탐색
-		long left = 1;
-		// 랜선길이는 자연수므로 최솟값 1로 세팅해야함
-		long right = max;
-		while (left <= right) {
-			long mid = (left + right) / 2;
-			long sum = 0;
-			for (int i = 0; i < K; i++) {
-				// 자른 개수 합
-				sum += (arr[i] / mid);
-			}
-			if (sum >= N) {
-				// 더 많은 랜선 나온 경우 더 크게 잘라줘야함
-				left = mid + 1;
-			} else {
-				right = mid - 1;
-			}
+	static long k, arr[];
+	static int n;
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		n = Integer.parseInt(st.nextToken());
+		k = Integer.parseInt(st.nextToken());
+		arr = new long[n];
+		for(int i=0; i<n; i++) {
+			arr[i] = Integer.parseInt(br.readLine());
 		}
-		System.out.println(right);
+		Arrays.sort(arr);
+		System.out.println(rec(1,arr[arr.length-1], 0));
+	}
+	private static int rec(long s, long e, int result) {
+		if(s>e) return result;
+		long cur_mid =  (long) Math.floor((s+e))/2;
+		int temp_sum=0;
+		for(int i=0; i<n; i++) {
+			temp_sum += (arr[i]/cur_mid);
+		}
+			
+		if(temp_sum<k) { // 개수가 적다 -> 길이를 줄여야 한다
+			e = cur_mid - 1;
+		}else {
+			s = cur_mid + 1;
+			result = (int)cur_mid;
+		} 
+		int next_result = rec(s, e, result);
+		
+		return Math.max(result, next_result);
 	}
 }
