@@ -14,19 +14,19 @@ public class BaekJoon2015 { // 수들의 합 4 (G4)
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		TreeMap<Integer, Integer> map = new TreeMap<>();
+		TreeMap<Long, Long> map = new TreeMap<>();
 		int N = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
-		int result = 0;
-		int[] arr = new int[N];
-		int[] sum = new int[N+1];
+		long result = 0;
+		long[] arr = new long[N];
+		long[] sum = new long[N+1];
 		st = new StringTokenizer(br.readLine());
 		for(int i=0; i<N; i++) {
 			arr[i] = Integer.parseInt(st.nextToken());
 			sum[i+1] = sum[i] + arr[i];
 			if(sum[i+1] == K) result++;
 			if(map.containsKey(sum[i+1]-K)) result += map.get(sum[i+1]-K);
-			map.put(sum[i+1], map.getOrDefault(sum[i+1], 0)+1);
+			map.put(sum[i+1], map.getOrDefault(sum[i+1], 0L)+1);
 		}
 		System.out.println(result);
 	}
