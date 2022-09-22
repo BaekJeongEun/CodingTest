@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class SWExpertAcademy7465 {
+public class SWExpertAcademy7465 { // 창용 마을 무리의 개수 (D4)
 	static int[] parents;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
