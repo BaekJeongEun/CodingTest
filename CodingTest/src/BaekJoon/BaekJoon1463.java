@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class BaekJoon1463 {
+public class BaekJoon1463 { // 1ë¡œ ë§Œë“¤ê¸° (S3)
 	static Integer[] dp;
 	public static void main(String[] args) throws IOException {
 
@@ -18,19 +18,15 @@ public class BaekJoon1463 {
 	static int recur(int N) {
 		 
 		if (dp[N] == null) {
-			// 6À¸·Î ³ª´²Áö´Â °æ¿ì 
 			if (N % 6 == 0) {
 				dp[N] = Math.min(recur(N - 1), Math.min(recur(N / 3), recur(N / 2))) + 1;
 			}
-			// 3À¸·Î¸¸ ³ª´²Áö´Â °æ¿ì 
 			else if (N % 3 == 0) {
 				dp[N] = Math.min(recur(N / 3), recur(N - 1)) + 1;
 			}
-			// 2·Î¸¸ ³ª´²Áö´Â °æ¿ì 
 			else if (N % 2 == 0) {
 				dp[N] = Math.min(recur(N / 2), recur(N - 1)) + 1;
 			}
-			// 2¿Í 3À¸·Î ³ª´©¾îÁöÁö ¾Ê´Â °æ¿ì
 			else {
 				dp[N] = recur(N - 1) + 1;
 			}
