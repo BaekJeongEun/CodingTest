@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class SWExpertAcademy1953 { // 탈주범 검거
+public class SWExpertAcademy1953_bfs { // 탈주범 검거
     static int N, M, R, C, L;
     static int[][] arr, dir = { { -1, 0 }, { 0, 1 }, { 1, 0 }, { 0, -1 } };
     static boolean[][] visit;
