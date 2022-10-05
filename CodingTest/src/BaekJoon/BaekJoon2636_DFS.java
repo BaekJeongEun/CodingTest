@@ -56,7 +56,7 @@ public class BaekJoon2636_DFS { // 치즈 (G4)
 		return cnt;
 	}
 
-	private static void countCheese(int x, int y) { // 치즈 만나면 2로 바꾸기
+	private static void countCheese(int x, int y) { 
 		for (int d = 0; d < 4; d++) {
 			int nx = x + dir[d][0];
 			int ny = y + dir[d][1];
