@@ -10,7 +10,6 @@ import java.util.StringTokenizer;
 public class BaekJoon2636_DFS { // 치즈 (G4)
 	static int N, M, answer, time;
 	static int[][] arr, dir = { { -1, 0 }, { 1, 0 }, { 0, -1 }, { 0, 1 } };
-	static Queue<Point> air = new ArrayDeque();
 	static boolean[][] visit;
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
@@ -72,21 +71,6 @@ public class BaekJoon2636_DFS { // 치즈 (G4)
 					arr[nx][ny] = 0;
 				}
 			}
-		}
-	}
-
-	private static class Point {
-		int x, y;
-
-		public Point(int x, int y) {
-			super();
-			this.x = x;
-			this.y = y;
-		}
-
-		@Override
-		public String toString() {
-			return "Point [x=" + x + ", y=" + y + "]";
 		}
 	}
 }
