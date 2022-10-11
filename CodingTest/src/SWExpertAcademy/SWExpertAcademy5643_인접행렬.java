@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.StringTokenizer;
 
-public class SWExpertAcademy5643 { // 키 순서
+public class SWExpertAcademy5643_인접행렬 { // 키 순서 - 인접행렬
 	static int N, M, min= 0, max=0, total=0;
 	static boolean connect[][], visit[];
 	public static void main(String[] args) throws IOException {
