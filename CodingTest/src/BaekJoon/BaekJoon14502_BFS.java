@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class BaekJoon14502_2 { // 연구소 (G4)
+public class BaekJoon14502_BFS { // 연구소 (G4)
 	static int N, M, max = Integer.MIN_VALUE;
 	static int[][] arr, dir = { { 1, 0 }, { -1, 0 }, { 0, 1 }, { 0, -1 } };
-	static boolean[] visit;
 	static ArrayList<Point> virusList;
 	static ArrayList<Point> safeList;
 	static ArrayList<Point> pickList;
@@ -38,7 +37,6 @@ public class BaekJoon14502_2 { // 연구소 (G4)
 				}
 			}
 		}
-		visit = new boolean[safeList.size()];
 		comb(0, 0);
 		System.out.println(max);
 	}
@@ -49,13 +47,9 @@ public class BaekJoon14502_2 { // 연구소 (G4)
 			return;
 		}
 		for (int i = idx; i < safeList.size(); i++) {
-			if (visit[i])
-				continue;
 			Point now = safeList.get(i);
-			visit[i] = true;
 			pickList.add(now);
 			comb(i + 1, cnt + 1);
-			visit[i] = false;
 			pickList.remove(now);
 		}
 	}
