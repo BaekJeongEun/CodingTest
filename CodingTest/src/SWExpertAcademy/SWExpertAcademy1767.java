@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class SWExpertAcademy1767 {
+public class SWExpertAcademy1767 { // 프로세서 연결하기
 	static int N;
 	static int dx[] = { -1, 1, 0, 0 };
 	static int dy[] = { 0, 0, 1, -1 };
@@ -27,7 +27,6 @@ public class SWExpertAcademy1767 {
 
 			for (int i = 0; i < N; i++) {
 				String[] str = br.readLine().split(" ");
-				// arr[i] = Arrays.stream(str).mapToInt(Integer::parseInt).toArray();
 				for (int j = 0; j < N; j++) {
 					arr[i][j] = Integer.parseInt(str[j]);
 
