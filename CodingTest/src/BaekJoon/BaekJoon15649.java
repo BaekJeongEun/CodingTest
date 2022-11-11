@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class BaekJoon15649 {
+public class BaekJoon15649 { // N과 M(1) (S3)
 	static int N, M, arr[], select[];
 	static boolean visit[];
 	public static void main(String[] args) throws IOException {
