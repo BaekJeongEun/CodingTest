@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class SWExpertAcademy14891 {
+public class SWExpertAcademy14891 { // 파핑파핑 지뢰찾기 (D4)
     static int N, dir[][] = {{1,0},{0,1},{-1,0},{0,-1},{1,1},{1,-1},{-1,1},{-1,-1}}, cnt[][];
     static char[][] arr;
     public static void main(String[] args) throws NumberFormatException, IOException {
