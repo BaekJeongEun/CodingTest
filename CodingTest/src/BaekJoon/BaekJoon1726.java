@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class BaekJoon1726 {
+public class BaekJoon1726 { // 로봇 (G3)
    static int N, M, startX, startY, startD, endX, endY, endD;
    static int[][] arr;
    static int moveX[] = {0,1,-1,0,0};
