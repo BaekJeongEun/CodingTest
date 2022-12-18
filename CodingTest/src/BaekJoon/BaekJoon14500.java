@@ -35,7 +35,7 @@ public class BaekJoon14500 { // 테트로미노 (G4)
 		System.out.println(max);
 	}
 	private static void dfs(int x, int y, int cnt, int sum) {
-		if(cnt == 4) {
+		if(cnt == 4) { // 정사각형 4개 이어붙이기 끝
 			max = Math.max(max, sum);
 			return;
 		}
@@ -43,7 +43,7 @@ public class BaekJoon14500 { // 테트로미노 (G4)
 			int nx = x + dir[d][0];
 			int ny = y + dir[d][1];
 			if(nx<0 || ny<0 || nx>=N || ny>=M || visit[nx][ny]) continue;
-			if(cnt == 2) {
+			if(cnt == 2) { // 정사각형 모양의 경우
 				visit[nx][ny] = true;
 				dfs(x, y, cnt+1, sum+arr[nx][ny]);
 				visit[nx][ny] = false;
