@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
 public class BaekJoon1520 { // 내리막길 (G3)
-    static int M, N;
+    static int M, N, cnt;
     static int[][] count, arr, dir= {{-1,0}, {0,-1}, {0,1}, {1,0}};
     public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -21,9 +21,11 @@ public class BaekJoon1520 { // 내리막길 (G3)
             }
         }
         dfs(0, 0);
+        System.out.println(cnt);
     }
     private static void dfs(int x, int y) {
         if(x == N-1 && y == M-1) {
+        	cnt++;
             return;
         }
         count[x][y]++;
@@ -31,7 +33,6 @@ public class BaekJoon1520 { // 내리막길 (G3)
             int nx = x + dir[d][0];
             int ny = y + dir[d][1];
             if(nx<0 || ny<0 || nx>=N || ny>=M || arr[nx][ny] >= arr[x][y]) continue;
-
             dfs(nx, ny);
         }
     }
