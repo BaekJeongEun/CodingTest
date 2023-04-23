@@ -32,13 +32,13 @@ public class BaekJoon17086 { // 아기 상어 2 (S2)
 			int x=cur.x;
 			int y=cur.y;
 			for (int j = 0; j < 8; j++) {
-				int yy=y+dy[j];
-				int xx=x+dx[j];
-				if(xx<0 || yy<0 || xx>=m || yy>=n)continue;
-				if(dist[yy][xx]!=0 || map[yy][xx]==1)continue;
-				dist[yy][xx]=dist[y][x]+1;
-				if(dist[yy][xx]>answer)answer=dist[yy][xx];
-				q.add(new Shark(xx,yy));
+				int ny=y+dy[j];
+				int nx=x+dx[j];
+				if(nx<0 || ny<0 || nx>=m || ny>=n)continue;
+				if(dist[ny][nx]!=0 || map[ny][nx]==1)continue;
+				dist[ny][nx]=dist[y][x]+1;
+				if(dist[ny][nx]>answer)answer=dist[ny][nx];
+				q.add(new Shark(nx,ny));
 			}
 		}
 		System.out.println(answer);	
