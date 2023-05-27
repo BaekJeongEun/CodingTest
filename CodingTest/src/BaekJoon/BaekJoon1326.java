@@ -16,7 +16,7 @@ public class BaekJoon1326 { // 폴짝폴짝 (S2)
 		boolean[] visit = new boolean[N];
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for (int i = 0; i < N; i++) {
-			arr[i] = Integer.parseInt(st.nextToken());
+			arr[i] = 1;
 		}
 		st = new StringTokenizer(br.readLine());
 		int a = Integer.parseInt(st.nextToken()) - 1;
