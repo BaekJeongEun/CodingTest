@@ -32,7 +32,7 @@ public class BaekJoon1043 { // 거짓말 (G4)
         t = br.readLine().split(" ");
         
         for(int i=1; i<t.length; i++) {
-            know[Integer.parseInt(t[i])] = true;    // 이 사람들은 진실을 알고있다
+            know[Integer.parseInt(t[i])] = true; 
         }
         
         
@@ -49,9 +49,8 @@ public class BaekJoon1043 { // 거짓말 (G4)
     public static void bfs() {
         Queue<Integer> q= new LinkedList<>();
         boolean visited [] = new boolean [m];
-        
         for(int i=1; i<=n; i++) {
-            if(know[i]) {   // 아는 사람들이 참여한 파티정보 
+            if(know[i]) {  
                 for(int k=0; k<people[i].size(); k++) {
                     if(!visited[people[i].get(k)]) {
                         q.add(people[i].get(k));
@@ -59,15 +58,10 @@ public class BaekJoon1043 { // 거짓말 (G4)
                     }
                 }
             }
-        }
-        
-        
+        }        
         while(!q.isEmpty()) {
-            int a = q.poll();   // 파티번호
-            
-            
+            int a = q.poll();              
             for(int num : party[a]) {
-                // num 이 참석한 파티정보
                 for(int partyInfo : people[num]) {
                     if(!visited[partyInfo]) {
                         q.add(partyInfo);
