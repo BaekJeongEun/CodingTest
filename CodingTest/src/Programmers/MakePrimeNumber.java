@@ -1,6 +1,6 @@
 package Programmers;
 
-import java.util.*;
+import java.util.ArrayList;
 class MakePrimeNumber {
     static int cnt;
     static int N;
