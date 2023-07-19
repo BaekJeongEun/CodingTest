@@ -1,8 +1,12 @@
 package Programmers;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 
-public class MenuRenewel {
+public class MenuRenewel { // 메뉴 리뉴얼 (L2)
 	static HashMap<String, Integer> map = new HashMap<>();
 
 	public static void main(String[] args) {
