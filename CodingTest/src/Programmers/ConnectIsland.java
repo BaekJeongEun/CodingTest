@@ -3,7 +3,7 @@ package Programmers;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class ConnectIsland {
+public class ConnectIsland { // 섬 연결하기 (L2)
 	static int[] parent;
 	public static void main(String[] args) {
 		System.out.println(solution(4, new int[][]{{0,1,1},{0,2,2},{1,3,1},{2,3,8}}));
