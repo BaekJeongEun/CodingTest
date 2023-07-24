@@ -7,7 +7,7 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class BaekJoon2538 { //치즈(G3)
+public class BaekJoon2538 { // 치즈(G3)
 	static int N, M, total;
 	static boolean[][] cheese;
 	static int[][] arr, dir= {{0,1},{0,-1},{1,0},{-1,0}};
