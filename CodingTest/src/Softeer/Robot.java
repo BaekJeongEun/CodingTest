@@ -5,8 +5,10 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.util.ArrayDeque;
 import java.util.Comparator;
 import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class Robot { // 로봇이 지나간 경로 (L3)
@@ -49,8 +51,7 @@ public class Robot { // 로봇이 지나간 경로 (L3)
 				for (int d = 0; d < 4; d++) {
 					visit = new boolean[N][M];
 					visit[i][j] = true;
-					moveRobot(d, i, j, area - 1, "", new int[] { i, j, d });
-
+					moveRobot(d, i, j, area);
 				}
 			}
 		}
@@ -61,34 +62,41 @@ public class Robot { // 로봇이 지나간 경로 (L3)
 		bw.close();
 	}
 
-	private static void moveRobot(int d, int x, int y, int area, String route, int[] origin) {
-		visit[x][y] = true;
-		if (area == 0) {
-			if (route.contains("A")) {
-				Plan now = new Plan(origin[0], origin[1], origin[2], route);
-				q.offer(now);
+	private static void moveRobot(int di, int sx, int sy, int area) {
+		Queue<Plan> queue = new ArrayDeque<Plan>();
+		queue.offer(new Plan(sx, sy, di, "", area));
+		while(!queue.isEmpty()) {
+			Plan now = queue.poll();
+			int x = now.x;
+			int y = now.y;
+			int direction = now.direction;
+			int remain = now.remain;
+			String route = now.route;
+			if(remain == 0) {
+				q.offer(new Plan(x, y, direction, route, 0));
+				return;
 			}
-			return;
-		}
+			int nD = (direction + 1) % 4;
+			int nx = x + dir[nD][0];
+			int ny = y + dir[nD][1];
+			if(!isArea(nx, ny)) {
+				visit[nx][ny] = true;
+				queue.offer(new Plan(nx, ny, direction, route+"R", area));
+			}
+			nD = (direction + 3) % 4;
+			nx = x + dir[nD][0];
+			ny = y + dir[nD][1];
+			if(!isArea(nx, ny)) {
+				visit[nx][ny] = true;
+				queue.offer(new Plan(nx, ny, direction, route+"L", area));
+			}
 
-		// L
-		int nextDir = (d - 1 + 4) % 4;
-		if (!isArea(x, y)) {
-			moveRobot(nextDir, x, y, area, route + "L", origin);
-		}
-
-		// R
-		nextDir = (d + 1) % 4;
-		if (!isArea(x, y)) {
-			moveRobot(nextDir, x, y, area, route + "R", origin);
-		}
-
-		// A
-		int nx = x + dir[d][0] * 2;
-		int ny = y + dir[d][1] * 2;
-
-		if (!isArea(nx, ny)) {
-			moveRobot(d, nx, ny, area - 2, route + "A", origin);
+			nx = x + dir[direction][0]*2;
+			ny = y + dir[direction][1]*2;
+			if(!isArea(nx, ny)) {
+				visit[nx][ny] = true;
+				queue.offer(new Plan(nx, ny, direction, route+"A", area-2));
+			}
 		}
 	}
 
@@ -98,15 +106,16 @@ public class Robot { // 로봇이 지나간 경로 (L3)
 
 	public static class Plan {
 		int x, y;
-		int direction;
+		int direction, remain;
 		String route;
 
-		public Plan(int x, int y, int direction, String route) {
+		public Plan(int x, int y, int direction, String route, int remain) {
 			super();
 			this.x = x;
 			this.y = y;
 			this.direction = direction;
 			this.route = route;
+			this.remain = remain;
 		}
 
 		@Override
