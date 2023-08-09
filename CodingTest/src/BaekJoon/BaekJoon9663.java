@@ -31,7 +31,7 @@ public class BaekJoon9663 { // N-Queen (G4)
 		}
 	}
 	private static boolean check(int cur) {
-		for(int i=0; i<N; i++) {
+		for(int i=0; i<cur; i++) {
 			if(arr[cur] == arr[i]) return false;
 			else if(Math.abs(cur-i) == Math.abs(arr[cur]-arr[i])) return false;
 		}
