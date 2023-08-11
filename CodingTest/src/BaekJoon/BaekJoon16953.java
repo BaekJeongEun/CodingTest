@@ -17,7 +17,7 @@ public class BaekJoon16953 { // A → B(S2)
 		System.out.println(answer);
 	}
 	private static void dfs(long num, long cnt) {
-		String strNum = num+"";
+		String strNum = String.valueOf(num);
 		if(num == B) {
 			answer = cnt + 1;
 		}
