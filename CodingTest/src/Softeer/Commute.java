@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class Commute { // 출퇴근길 (L3)
+public class Commute { // 출퇴근길(L3)
 	static int n, m, S, T;
 	static ArrayList<ArrayList<Integer>> arr;
 	static boolean[] arrVisit, reverseVisit;
