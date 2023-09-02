@@ -8,96 +8,141 @@ import java.util.Queue;
 import java.util.StringTokenizer;
 
 public class BaekJoon1726 { // 로봇 (G3)
-   static int N, M, startX, startY, startD, endX, endY, endD;
-   static int[][] arr;
-   static int moveX[] = {0,1,-1,0,0};
-   static int moveY[] = {0,0,0,1,-1};
-   static Queue<Point> q = new ArrayDeque();
-   static boolean[][][] visit;
-   public static void main(String[] args) throws IOException {
-
-      BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-      StringTokenizer st = new StringTokenizer(br.readLine());
-      N = Integer.parseInt(st.nextToken());
-      M = Integer.parseInt(st.nextToken());
-      arr = new int[N][M];
-      visit = new boolean[N][M][5];
-      for (int i = 0; i < N; i++) {
-         st = new StringTokenizer(br.readLine());
-         for (int j = 0; j < M; j++) {
-            arr[i][j] = Integer.parseInt(st.nextToken());
-         }
-      }
-      st = new StringTokenizer(br.readLine());
-      startX = Integer.parseInt(st.nextToken()) - 1;
-      startY = Integer.parseInt(st.nextToken()) - 1;
-      startD = Integer.parseInt(st.nextToken());
-      visit[startX][startY][startD] = true;
-      q.offer(new Point(startX, startY, startD, 0));
-      st = new StringTokenizer(br.readLine());
-      endX = Integer.parseInt(st.nextToken()) - 1;
-      endY = Integer.parseInt(st.nextToken()) - 1;
-      endD = Integer.parseInt(st.nextToken());
-      System.out.println(bfs());
-   }
-
-   private static int bfs() {
-      int result = Integer.MAX_VALUE;
-      while(!q.isEmpty()) {
-         Point now = q.poll();
-         int x = now.x;
-         int y = now.y;
-         int d = now.dir;
-         int command = now.command;
-         
-         if(x == endX && y == endY && endD == d) {
-            result = command;
-            break;
-         }
-         for(int k=1; k<=3; k++) { // k 1~3까지 이동
-            int nx = x + (moveX[d] * k);
-            int ny = y + (moveY[d] * k);
-            if(!check(nx, ny)) continue;
-            if(arr[nx][ny]==0) { // 궤도라면
-               if(!visit[nx][ny][d]) {
-                  q.offer(new Point(nx, ny, d, command + 1));
-                  visit[nx][ny][d] = true;
-               }
-            }else break; // 궤도가 아니라면 멈추기, 어차피 더 못 감
-         }
-         
-         for (int i = 1; i <= 4; i++) {
-                if (d != i && !visit[x][y][i]) {
-                    int cnt = 1;
-                    if ((d == 1 && i == 2) || (d == 2 && i == 1) || (d == 3 && i == 4) || (d == 4 && i == 3)) { 
-                        cnt++;
-                    }
-                    visit[x][y][i] = true;
-                    q.offer(new Point(x, y, i, command + cnt));
-                }
-            }
-      }
-      return result;
-   }
-
-   private static boolean check(int x, int y) {
-      return (x>=0 && y>=0 && x<N && y<M); // 로봇이 갈 수 있는 지역이라면
-   }
-
-   private static class Point {
-      int x, y, dir, command;
-
-      public Point(int x, int y, int dir, int command) {
-         super();
-         this.x = x;
-         this.y = y;
-         this.dir = dir;
-         this.command = command;
-      }
-
-      @Override
-      public String toString() {
-         return "Point [x=" + x + ", y=" + y + ", dir=" + dir + ", command=" + command + "]";
-      }
-   }
+	static class Node{
+		int x;
+		int y;
+		int d;
+		int cnt;
+		
+		public Node(int x, int y, int d, int cnt) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.d = d;
+			this.cnt = cnt;
+		}
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + d;
+			result = prime * result + x;
+			result = prime * result + y;
+			return result;
+		}
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			Node other = (Node) obj;
+			if (d != other.d)
+				return false;
+			if (x != other.x)
+				return false;
+			if (y != other.y)
+				return false;
+			return true;
+		}
+		
+		
+	}
+	static BufferedReader br;
+	static StringTokenizer st;
+	static int n,m;
+	static int[][] map;
+	static Node start, end;
+	static int[] dx = {1, -1, 0, 0};
+	static int[] dy = {0, 0, 1, -1};
+	public static void main(String[] args) throws IOException{
+		br = new BufferedReader(new InputStreamReader(System.in));
+		st = new StringTokenizer(br.readLine());
+		inputData();
+		bfs();
+	}
+	
+	static void bfs() {
+		Queue<Node> q = new LinkedList<>();
+		boolean[][][] check = new boolean[n][m][4];
+		q.add(start);
+		check[start.y][start.x][start.d] = true;
+		
+		while(!q.isEmpty()) {
+			Node cur = q.poll();
+			int cy = cur.y;
+			int cx = cur.x;
+			int cd = cur.d;
+			int cnt = cur.cnt;
+			
+			if(isEnd(cur)) {
+				System.out.println(cnt);
+				return;
+			}
+			
+			// 현재 방향으로 앞으로 3칸
+			for(int f=1; f<=3; f++) {
+				int nx = cx+dx[cd]*f;
+				int ny = cy+dy[cd]*f;
+				
+				if(nx < 0 || ny < 0 || nx > m-1 || ny > n-1) continue;
+				if(check[ny][nx][cd] ) continue;
+				if(map[ny][nx] == 0) {
+					check[ny][nx][cd] = true;
+					q.add(new Node(nx,ny,cd, cnt+1));	
+				}else break;
+				
+			}
+			
+			// 방향 변환 
+			for(int d=0; d<4; d++) {
+				if(d == cd || check[cy][cx][d]) continue;
+				
+				check[cy][cx][d] = true;
+				// 동 서 남 북 (0 1 2 3)
+				if(isReverse(cd, d)) {
+					q.add(new Node(cx,cy,d, cnt+2));
+				}else {
+					q.add(new Node(cx,cy,d, cnt+1));
+				}
+			}
+		}
+	}
+	
+	static boolean isReverse(int cd, int nd) {
+		if((cd == 0 && nd ==1) || (cd ==1 && nd ==0)
+				|| ((cd ==2 && nd ==3)) || (cd ==3 && nd ==2)) return true;
+		return false;
+	}
+	
+	static boolean isEnd(Node cur) {
+		return end.equals(cur);
+	}
+	
+	static void inputData() throws IOException {
+		n = Integer.parseInt(st.nextToken());
+		m = Integer.parseInt(st.nextToken());
+		
+		map = new int[n][m];
+		for(int i=0; i<n; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j=0; j<m; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		st = new StringTokenizer(br.readLine());
+		int y = Integer.parseInt(st.nextToken())-1;
+		int x = Integer.parseInt(st.nextToken())-1;
+		int d = Integer.parseInt(st.nextToken())-1;
+		start = new Node(x,y,d,0);
+		
+		st = new StringTokenizer(br.readLine());
+		y = Integer.parseInt(st.nextToken())-1;
+		x = Integer.parseInt(st.nextToken())-1;
+		d = Integer.parseInt(st.nextToken())-1;
+		end = new Node(x,y,d,0);
+		
+	}
 }
