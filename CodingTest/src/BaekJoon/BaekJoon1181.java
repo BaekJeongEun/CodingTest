@@ -6,26 +6,42 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Comparator;
 
-public class BaekJoon1181 {
-
+public class BaekJoon1181 { // 단어정렬
 	public static void main(String[] args) throws IOException {
+	    
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+ 
 		int N = Integer.parseInt(br.readLine());
-		String[] strL = new String[N];
-		for(int i=0; i<N; i++) {
-			strL[i] = br.readLine();
+ 
+		String[] arr = new String[N];
+ 
+		for (int i = 0; i < N; i++) {
+			arr[i] = br.readLine();
 		}
-		Arrays.sort(strL, new Comparator<String>() {
-			@Override
-			public int compare(String o1, String o2) {
-				if(o1.length() != o2.length())	// 문자열 길이 다르다면
-					return o1.length()-o2.length(); // 문자열 길이 작은 순서대로 (작은 것 - 큰 것 = 음수, 더 작아서 앞으로 감) 
-				else
-					return o1.compareTo(o2);	// 문자열 길이 같다면 문자 비교
+		
+		Arrays.sort(arr, new Comparator<String>() {
+			public int compare(String s1, String s2) {
+				// 단어 길이가 같을 경우 
+				if (s1.length() == s2.length()) {
+					return s1.compareTo(s2);
+				} 
+				// 그 외의 경우 
+				else {
+					return s1.length() - s2.length();
+				}
 			}
 		});
-		for(int i=0; i<N; i++) {
-			System.out.println(strL[i]);
+ 
+		StringBuilder sb = new StringBuilder();
+ 
+		sb.append(arr[0]).append('\n');
+		
+		for (int i = 1; i < N; i++) {
+			// 중복되지 않는 단어만 출력
+			if (!arr[i].equals(arr[i - 1])) {
+				sb.append(arr[i]).append('\n');
+			}
 		}
+		System.out.println(sb);
 	}
 }
