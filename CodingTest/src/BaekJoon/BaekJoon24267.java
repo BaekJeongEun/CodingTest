@@ -1,34 +1,21 @@
 package BaekJoon;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
 
-public class BaekJoon24267 { // 알고리즘의 수행 시간 6
+public class BaekJoon24267 { // 알고리즘의 수행 시간 5
 
 	public static void main(String[] args) throws NumberFormatException, IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st;
 
         long n = Long.parseLong(br.readLine());
 
-        int count = 0;
-
-        for(int i = 1; i <= n-2; i++){
-            for(int j = i+1; j <= n-1; j++){
-                for(int k = j+1; k <= n; k++){
-                    count++;
-                }
-            }
-        }
-
+        System.out.println(n * n * n);
+        System.out.println(3);
         br.close();
-
-        bw.write(count+"\n" + 3);
-        bw.flush();
-        bw.close();
 
 	}
 
