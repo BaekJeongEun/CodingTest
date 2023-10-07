@@ -5,17 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class DestroyTurret {
-	static int N, M, K;
-	static int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}};
+public class DestroyTurret { // 포탑 부수기
+	static int N, M, K, time = 0;
+	static int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}, {1,1},{1,-1}, {-1, 1}, {-1,-1}};
 	static Turret[][] map;
 	static ArrayList<Turret> turrets;
 	static Turret attacker, target;
+	static boolean exit;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
@@ -28,74 +28,115 @@ public class DestroyTurret {
 			for(int j=0; j<M; j++) {
 				int now = Integer.parseInt(st.nextToken());
 				if(now == 0) continue;
-				map[i][j] = new Turret(i, j, now, 0, false); // x, y, 공격력, 공격한 시간, 공격 가해, 피해 여부
+				map[i][j] = new Turret(i, j, now, time, false); // x, y, 공격력, 공격한 시간, 공격 가해, 피해 여부
 			}
 		}
-		A:while(true) {
+		A:while(K-->0) {
 			// q에 넣기, 만약 공격 안 받은 포탄이 없다면 종료
-			boolean exit = true;
+			exit = true;
 			turrets = new ArrayList<>();
-			for(int i=0; i<N; i++) {
-				for(int j=0; j<M; j++) {
-					if(map[i][j] == null) continue;
-					if(map[i][j].power <= 0) {
-						map[i][j] = null;
-						continue;
-					}
-					if(!map[i][j].attack) exit = false;
-					turrets.add(new Turret(i, j, map[i][j].power, map[i][j].attackTime, map[i][j].attack));
-				}
-			}
-			if(exit) break A;
+			createMap();
+
+			time++;
 			// 공격자 선정 (약한)
 			attacker = getAttacker();
 			
 			// 대상자 선정 (강한) .reverse
 			target = getTarget();
+			map[attacker.x][attacker.y].power += (N+M);
 			
+			if(exit) break A;
 			// 레이저 공격
 			if(!laser()) { // 실패하면 포탄
 				// 포탄 공격
 				bomb();
 			}
-		}		
+		}
+		createMap();
+
+		attacker = getAttacker();
+		
+		// 대상자 선정 (강한) .reverse
+		target = getTarget();
+		map[attacker.x][attacker.y].power += (N+M);
+		System.out.println(getTarget().power);
+	}
+	private static void createMap() {
+		for(int i=0; i<N; i++) {
+			for(int j=0; j<M; j++) {
+				if(map[i][j] == null) continue;
+				if(map[i][j].power <= 0) {
+					map[i][j] = null;
+					continue;
+				}
+				if(!map[i][j].attack) exit = false;
+				Turret now = new Turret(i, j, (!map[i][j].attack && time!=0)?map[i][j].power+1:map[i][j].power, map[i][j].attackTime, map[i][j].attack);
+				turrets.add(now);
+				map[i][j] = now;
+			}
+		}
 	}
 	private static void bomb() {
-		// TODO Auto-generated method stub
-		
+		int x = target.x;
+		int y = target.y;
+		map[x][y].power -= map[attacker.x][attacker.y].power;
+		int sub = map[attacker.x][attacker.y].power/2;
+		map[attacker.x][attacker.y].attackTime = time;
+		for(int d=0; d<8; d++) {
+			int nx = x + dir[d][0];
+			int ny = y + dir[d][1];
+			if(nx<0) nx = N-1;
+			if(ny<0) ny = M-1;
+			if(nx>=N) nx = 0;
+			if(ny>=M) ny = 0;
+			if((nx == attacker.x && ny == attacker.y) || map[nx][ny]==null) continue;
+			map[nx][ny].power -= sub;
+			map[nx][ny].attack = true;
+		}
 	}
 	private static boolean laser() {
-		Queue<int[]> q = new ArrayDeque();
-		q.offer(new int[] {attacker.x, attacker.y});
+		Queue<TurretRoute> q = new ArrayDeque();
+		q.offer(new TurretRoute(attacker.x, attacker.y, new ArrayList<>()));
 		boolean[][] visit = new boolean[N][M];
 		visit[attacker.x][attacker.y] = true;
+		map[attacker.x][attacker.y].attackTime = time;
 		Turret temp[][] = new Turret[N][M];
 		for(int i=0; i<N; i++) {
 			temp[i] = map[i].clone();
 		}
 		while(!q.isEmpty()) {
-			int[] now = q.poll();
-			int x = now[0];
-			int y = now[1];
-			ArrayList<int[]> route = temp[x][y].route;
+			TurretRoute now = q.poll();
+			int x = now.x;
+			int y = now.y;
+			ArrayList<int[]> route = now.route;
 			if(x == target.x && y == target.y) {
 				map = temp;
 				map[x][y].attack = true;
 				map[x][y].power -= map[attacker.x][attacker.y].power;
 				map[attacker.x][attacker.y].attack = true;
+				map[attacker.x][attacker.y].attackTime = time;
+				for(int s=0; s<route.size()-1; s++) {
+					int nextX = route.get(s)[0];
+					int nextY = route.get(s)[1];
+					int sub = map[attacker.x][attacker.y].power / 2;
+					map[nextX][nextY].attack = true;
+					map[nextX][nextY].power -= sub;
+				}
 				return true;
 			}
 			for(int d=0; d<4; d++) {
 				int nx = x + dir[d][0];
 				int ny = y + dir[d][1];
-				if(nx<0) nx = N;
-				if(ny<0) ny = M;
+				if(nx<0) nx = N-1;
+				if(ny<0) ny = M-1;
 				if(nx>=N) nx = 0;
-				if(ny>=M) y = 0;
+				if(ny>=M) ny = 0;
 				if(temp[nx][ny] == null || visit[nx][ny]) continue;
 				visit[nx][ny] = true;
-				q.offer(new int[] {nx, ny});
-				temp[nx][ny].route.add(new int[] {nx, ny});
+				ArrayList<int[]> copy = new ArrayList<>();
+				copy.addAll(route);
+				copy.add(new int[] {nx, ny});
+				q.offer(new TurretRoute(nx, ny, copy));
 			}
 		}
 		
@@ -112,11 +153,12 @@ public class DestroyTurret {
 	
 	static class TurretRoute {
 		int x, y;
-		ArrayList<int[]> route = new ArrayList<>();
-		public TurretRoute(int x, int y) {
+		ArrayList<int[]> route;
+		public TurretRoute(int x, int y, ArrayList<int[]> route) {
 			super();
 			this.x = x;
 			this.y = y;
+			this.route = route;
 		}
 	}
 	
