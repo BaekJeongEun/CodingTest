@@ -5,67 +5,75 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class BaekJoon16926 {
-	static int arr[][];
+public class BaekJoon16926 { // ë°°ì—´ ëŒë¦¬ê¸°1 (ã„´1)
+	static int N, M, R;
+	static int min;
+	static int[][] map;
+	
+	static int[] dx = {0, 1, 0, -1};
+	static int[] dy = {1, 0, -1, 0};
+    
+    public static void main(String[] args) throws IOException {
+    	BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    	
+    	StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+    	N = Integer.parseInt(st.nextToken()); // í–‰ í¬ê¸°
+    	M = Integer.parseInt(st.nextToken()); // ì—´ í¬ê¸°
+    	R = Integer.parseInt(st.nextToken()); // íšŒì „ íšŸìˆ˜
 
-	public static void main(String[] args) throws NumberFormatException, IOException {
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st = new StringTokenizer(br.readLine());
-
-		int dir[][] = { { 0, -1 }, { -1, 0 }, { 0, 1 }, { 1, 0 } };
-		int h = Integer.parseInt(st.nextToken());
-		int w = Integer.parseInt(st.nextToken());
-		int TC = Integer.parseInt(st.nextToken());
-		arr = new int[h][w];
-		String str[] = null;
-		for (int i = 0; i < h; i++) {
-			str = br.readLine().split(" ");
-			for (int j = 0; j < w; j++) {
-				arr[i][j] = Integer.parseInt(str[j]);
-			}
-		}
-
-		for (int tc = 0; tc < TC; tc++) {
-
-			for (int i = 0; i < h / 2 + 1; i++) {
-				int temp = arr[i][i];
-
-				if ((h % 2 != 0 && i == h / 2)) {
-					move(i, w - i - 1, w - i - 1 - i, dir[0]); // ¿ìÃø »ó´Ü ²ÀÁöÁ¡, ¹İº¹ È½¼ö
-					arr[i][w - i - 1] = temp;
-				}
-				else if(w>h&& i==h/2 && w%2!=0){
-					move(i + 1, i, h - i - 1 - i - 1, dir[3]);
-					arr[i + 1][i] = temp;
-				}
-				else {
-					move(i, w - i - 1, w - i - 1 - i, dir[0]); // ¿ìÃø »ó´Ü ²ÀÁöÁ¡, ¹İº¹ È½¼ö
-					move(h - i - 1, w - i - 1, h - i - 1 - i, dir[1]); // ¿ìÃø ÇÏ´Ü ²ÀÁöÁ¡
-					move(h - i - 1, i, w - i - 1 - i, dir[2]); // ÁÂÃø ÇÏ´Ü ²ÀÁöÁ¡
-					move(i + 1, i, h - i - 1 - i - 1, dir[3]); // ÁÂÃø »ó´Ü ²ÀÁöÁ¡
-
-					arr[i + 1][i] = temp;
-				}
-			}
-		}
-		for (int i = 0; i < h; i++) {
-			for (int j = 0; j < w; j++) {
-				System.out.print(arr[i][j] + " ");
-			}
-			System.out.println();
-		}
-	}
-
-	static void move(int i, int j, int cnt, int[] dir) {
-		int x = i, y = j;
-		int next, current = arr[x][y];
-		for (int k = 0; k < cnt; k++) {
-			next = arr[x + dir[0]][y + dir[1]];
-			x += dir[0];
-			y += dir[1];
-			arr[x][y] = current;
-			current = next;
-		}
-	}
-
+    	map = new int[N][M];
+    	for(int i=0; i<N; i++) {
+    		st = new StringTokenizer(br.readLine(), " ");
+    		for(int j=0; j<M; j++) {
+    			map[i][j] = Integer.parseInt(st.nextToken());
+    		}
+    	}
+    	
+    	min = Math.min(N, M); 
+    	
+    	for(int i=1; i<=R; i++) {
+    		rotate();
+    	}
+    	
+    	print();
+    }
+    
+    static void rotate() {
+    	
+    	for(int t=0; t<min/2; t++) { 
+    		int x = t;
+    		int y = t;
+    		
+    		int temp = map[x][y]; 
+    		
+    		int idx = 0; 
+    		while(idx < 4) { 
+    			int nx = x + dx[idx];
+    			int ny = y + dy[idx];
+    			
+    			if(nx < N-t && ny < M-t && nx >= t && ny >= t) {
+    				map[x][y] = map[nx][ny];
+    				x = nx;
+    				y = ny;
+    			} 
+    			else {
+    				idx++;
+    			}
+    			
+    		}
+    		
+    		map[t+1][t] = temp;
+    	}
+    	
+    }
+    
+    static void print() {
+    	for(int i=0; i<N; i++) {
+    		for(int j=0; j<M; j++) {
+    			System.out.print(map[i][j] + " ");
+    		}
+    		System.out.println();
+    	}
+    	System.out.println();
+    }
 }
