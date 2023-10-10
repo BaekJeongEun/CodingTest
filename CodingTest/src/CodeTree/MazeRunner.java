@@ -1,0 +1,192 @@
+package CodeTree;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
+
+public class MazeRunner { // 메이즈러너
+	static int[][] dir = {{-1,0},{1,0},{0,-1},{0,1}}, map;
+	static int exitX, exitY, minX, minY, N, M, K, answer;
+	static ArrayList<Candidate>[][] cadidates;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		StringBuilder sb = new StringBuilder();
+		N = Integer.parseInt(st.nextToken());
+		M = Integer.parseInt(st.nextToken());
+		K = Integer.parseInt(st.nextToken());
+		map = new int[N+1][N+1];
+		cadidates = new ArrayList[N+1][N+1];
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				cadidates[i][j] = new ArrayList<>();
+			}
+		}
+		for(int i=1; i<=N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j=1; j<=N; j++) {
+				map[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+		for(int i=0; i<M; i++) {
+			st = new StringTokenizer(br.readLine());
+			int x = Integer.parseInt(st.nextToken());
+			int y = Integer.parseInt(st.nextToken());
+			cadidates[x][y].add(new Candidate(x, y));
+		}
+		st = new StringTokenizer(br.readLine());
+		exitX = Integer.parseInt(st.nextToken());
+		exitY = Integer.parseInt(st.nextToken());
+
+		while(K-- > 0 && M>0) {
+			// 이동
+			move();
+			System.out.println("이동 후");
+			print();
+			
+			// 정사각형 구하기
+			getRectangle();	
+			System.out.println("정사각형 그린 후");
+			print();
+			
+			// 시계 90도 회전
+
+			int n = Math.max((Math.abs(exitX-minX)), (Math.abs(exitY-minY))) + 1; // 정사각형 변 길이 구하기
+			System.out.println("exit "+exitX+" "+exitY);
+			System.out.println("참가자 "+minX+" "+minY);
+			int endX = Math.max(exitX, minX);
+			int endY = Math.max(exitY, minY);
+			int startX = endX - n + 1;
+			int startY = endY - n + 1;
+			System.out.println("시작 "+startX+" "+startY+"   : "+n);
+			System.out.println("끝점 "+endX+" "+endY+"   : "+n);
+			rotate(startX, startY, endX, endY, n);		
+			System.out.println("회전 후");
+			print();
+
+			
+		}
+		sb.append(answer).append("\n").append(exitX).append(" ").append(exitY);
+		System.out.println(sb.toString());
+	}
+	
+	private static void print() {
+		System.out.println("----------------------------------- 내구성");
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				System.out.print(map[i][j]+" ");
+			}System.out.println();
+		}
+
+		System.out.println("------------------------------------ 사람수 ");
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				System.out.print(cadidates[i][j].size()+" ");
+			}System.out.println();
+		}
+	}
+
+	private static void rotate(int startX, int startY, int endX, int endY, int n) {
+		// 회전하면서 내구도 1씩 깎기, cadidates도 돌리기..
+		int[][] temp = new int[N+1][N+1];
+		for(int i=1; i<=N; i++) {
+			temp[i] = map[i].clone();
+		}
+		ArrayList<Candidate> tempList[][] = new ArrayList[N+1][N+1];
+		for(int i=1; i<=N; i++) {
+			tempList[i] = cadidates[i].clone();
+		}
+		
+		for(int j=startY; j<=endY; j++) {
+			for(int i=endX; i>=startX; i--) {
+				if(i == exitX && j == exitY) {
+					exitX = j;
+					exitY = n+1-i;
+				}
+				temp[j][n+1-i] = map[i][j]-1;
+				tempList[j][n+1-i] = cadidates[i][j];
+			}
+		}
+		map = temp;
+		cadidates = tempList;
+	}
+	private static void getRectangle() {
+		// 모든 참가자의 위치와 출구 위치의 최단 거리 구하기
+		PriorityQueue<Rectangle> rectangles = new PriorityQueue<>();
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				if(cadidates[i][j].isEmpty()) continue;
+				rectangles.offer(new Rectangle(i, j));
+			}
+		}
+		// 가장 작은 정사각형의 좌표
+		minX = rectangles.peek().x;
+		minY = rectangles.peek().y;
+	}
+	private static void move() {
+		// 가상 temp에 모두 이동 시키기
+		ArrayList<Candidate>[][] temp = new ArrayList[N+1][N+1];
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				temp[i][j] = new ArrayList<>();
+			}
+		}
+		for(int i=1; i<=N; i++) {
+			for(int j=1; j<=N; j++) {
+				if(cadidates[i][j]==null || cadidates[i][j].isEmpty()) continue;
+				// 4방향 모두 확인해서 최단 거리 가까운 곳으로 이동
+				int minDist = Math.abs(exitX-i)+Math.abs(exitY-j);
+				int minX = i, minY = j;
+				for(int d=0; d<4; d++) {
+					int nx = i + dir[d][0];
+					int ny = j + dir[d][1];
+					if(nx<1 || nx<1 || nx>=N+1 || ny>=N+1 || map[nx][ny] != 0) continue;
+					int currentDist = Math.abs(exitX-nx)+Math.abs(exitY-ny);
+					if(minDist < currentDist) continue;
+					minX = nx;
+					minY = ny;
+					minDist = currentDist;
+				}
+				if(minX == exitX && minY == exitY) {
+					M -= cadidates[i][j].size();
+				}else {
+					temp[minX][minY] = cadidates[i][j];
+				}
+			}
+		}
+		cadidates = temp;
+	}
+	static class Candidate {
+		int x, y;
+
+		public Candidate(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+		
+	}
+	static class Rectangle implements Comparable<Rectangle>{
+		int x, y;
+
+		public Rectangle(int x, int y) {
+			super();
+			this.x = x;
+			this.y = y;
+		}
+
+		@Override
+		public int compareTo(Rectangle o) {
+			int myDist = (Math.abs(exitX-this.x) + Math.abs(exitY-this.y));
+			int yourDist = (Math.abs(exitX-o.x) + Math.abs(exitY-o.y));
+			if(myDist == yourDist) {
+				if(this.x == o.x) {
+					return this.y - o.y;
+				}return this.x - o.x;
+			}return myDist - yourDist;
+		}
+	}
+}
