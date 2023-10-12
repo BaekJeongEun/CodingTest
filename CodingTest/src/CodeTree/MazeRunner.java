@@ -41,19 +41,23 @@ public class MazeRunner { // 메이즈러너
 		exitX = Integer.parseInt(st.nextToken());
 		exitY = Integer.parseInt(st.nextToken());
 
+		print();
 		while(K-- > 0 && M>0) {
 			// 이동
 			move();
-			//System.out.println("이동 후");
-			//print();
+			System.out.println("=============================================이동 후");
+			if(M<=0) break;
+			print();
 			
 			// 정사각형 구하기
 			int n = getRectangle();	
 			
 			// 시계 90도 회전			
 			rotate(n);		
-			//System.out.println("회전 후");
-			//print();
+			System.out.println("=============================================회전 후");
+			print();
+
+			
 		}
 		sb.append(answer).append("\n").append(exitX).append(" ").append(exitY);
 		System.out.println(sb.toString());
@@ -63,13 +67,19 @@ public class MazeRunner { // 메이즈러너
 		System.out.println("----------------------------------- 내구성");
 		for(int i=1; i<=N; i++) {
 			for(int j=1; j<=N; j++) {
-				System.out.print(map[i][j]+" ");
+				if(exitX ==i && exitY==j) 
+					System.out.print(". ");
+				else
+					System.out.print((map[i][j]<=0?0:map[i][j])+" ");
 			}System.out.println();
 		}
 
-		System.out.println("------------------------------------ 사람수 ");
+		System.out.println("------------------------------------ 사람수 "+M);
 		for(int i=1; i<=N; i++) {
 			for(int j=1; j<=N; j++) {
+				if(exitX ==i && exitY==j) 
+					System.out.print(". ");
+				else
 				System.out.print(cadidates[i][j].size()+" ");
 			}System.out.println();
 		}
@@ -86,8 +96,8 @@ public class MazeRunner { // 메이즈러너
 			tempList[i] = cadidates[i].clone();
 		}
 		
-//		System.out.println("시작 "+startX+" "+startY+"   : "+n);
-//		System.out.println("끝점 "+endX+" "+endY+"   : "+n);
+		System.out.println("시작 "+startX+" "+startY+"   : "+n);
+		System.out.println("끝점 "+endX+" "+endY+"   : "+n);
 		boolean change = false;
 		for(int j=startY, j2=startX; j<=endY; j++, j2++) {
 			for(int i=startX, i2=endY; i<=endX; i++, i2--) {
@@ -95,11 +105,11 @@ public class MazeRunner { // 메이즈러너
 					exitX = j2;
 					exitY = i2;
 					change = true;
-					//System.out.println("출구   ~~~ "+j2+" "+i2);
+					System.out.println("출구   ~~~ "+j2+" "+i2);
 				}
-//				System.out.println(i+"|"+j);
-//				System.out.println((j2)+"|"+(i2));
-//				System.out.println("-----");
+				//System.out.println(i+"|"+j);
+				//System.out.println((j2)+"|"+(i2));
+				//System.out.println("-----");
 				temp[j2][i2] = map[i][j]-1;
 				tempList[j2][i2] = cadidates[i][j];
 			}
@@ -112,7 +122,7 @@ public class MazeRunner { // 메이즈러너
 		PriorityQueue<Rectangle> rectangles = new PriorityQueue<>();
 		for(int i=1; i<=N; i++) {
 			for(int j=1; j<=N; j++) {
-				if(cadidates[i][j].isEmpty()) continue;
+				if(cadidates[i][j]==null || cadidates[i][j].isEmpty()) continue;
 				rectangles.offer(new Rectangle(i, j));
 			}
 		}
@@ -121,8 +131,8 @@ public class MazeRunner { // 메이즈러너
 		minY = rectangles.peek().y;
 		
 		int n = Math.max((Math.abs(exitX-minX)), (Math.abs(exitY-minY))) + 1; // 정사각형 변 길이 구하기
-		//System.out.println("exit "+exitX+" "+exitY);
-		//System.out.println("참가자 "+minX+" "+minY);
+		System.out.println("exit "+exitX+" "+exitY);
+		System.out.println("참가자 "+minX+" "+minY);
 		
 		A:for(int x=1; x<=N-n+1; x++) {
 			for(int y=1; y<=N-n+1; y++) {
@@ -153,8 +163,8 @@ public class MazeRunner { // 메이즈러너
 			for(int j=1; j<=N; j++) {
 				if(cadidates[i][j]==null || cadidates[i][j].isEmpty()) continue;
 				// 4방향 모두 확인해서 최단 거리 가까운 곳으로 이동
-				//System.out.println(exitX+" 출구는 ? "+exitY);
-				//System.out.println(i+" 현재 위치 ? "+j);
+				System.out.println(exitX+" 출구는 ? "+exitY);
+				System.out.println(i+" 현재 위치 ? "+j);
 				boolean moving = false;
 				int minDist = Math.abs(exitX-i)+Math.abs(exitY-j);
 				int minX = i, minY = j;
@@ -167,13 +177,14 @@ public class MazeRunner { // 메이즈러너
 					minX = nx;
 					minY = ny;
 					minDist = currentDist;
-					//System.out.println("d "+d +"  "+nx + "  "+ny+" currentDist "+ currentDist);
+					System.out.println("d "+d +"  "+nx + "  "+ny+" currentDist "+ currentDist);
 					moving = true;
 				}
 				if(minX == exitX && minY == exitY) {
 					M -= cadidates[i][j].size();
 				}else {
-					temp[minX][minY] = cadidates[i][j];
+					for(Candidate c : cadidates[i][j])
+					temp[minX][minY].add(c);
 				}
 				if(moving) answer++;
 			}
