@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class BaekJoon16926 { // 배열 돌리기1 (ㄴ1)
+public class BaekJoon16926 { // 배열 돌리기1(S1)
 	static int N, M, R;
 	static int min;
 	static int[][] map;
