@@ -45,17 +45,17 @@ public class MazeRunner { // 메이즈러너
 		while(K-- > 0 && M>0) {
 			// 이동
 			move();
-			System.out.println("=============================================이동 후");
+			//System.out.println("=============================================이동 후");
 			if(M<=0) break;
-			print();
+			//print();
 			
 			// 정사각형 구하기
 			int n = getRectangle();	
 			
 			// 시계 90도 회전			
 			rotate(n);		
-			System.out.println("=============================================회전 후");
-			print();
+			//System.out.println("=============================================회전 후");
+			//print();
 
 			
 		}
@@ -105,7 +105,7 @@ public class MazeRunner { // 메이즈러너
 					exitX = j2;
 					exitY = i2;
 					change = true;
-					System.out.println("출구   ~~~ "+j2+" "+i2);
+					//System.out.println("출구   ~~~ "+j2+" "+i2);
 				}
 				//System.out.println(i+"|"+j);
 				//System.out.println((j2)+"|"+(i2));
@@ -131,8 +131,8 @@ public class MazeRunner { // 메이즈러너
 		minY = rectangles.peek().y;
 		
 		int n = Math.max((Math.abs(exitX-minX)), (Math.abs(exitY-minY))) + 1; // 정사각형 변 길이 구하기
-		System.out.println("exit "+exitX+" "+exitY);
-		System.out.println("참가자 "+minX+" "+minY);
+		//System.out.println("exit "+exitX+" "+exitY);
+		//System.out.println("참가자 "+minX+" "+minY);
 		
 		A:for(int x=1; x<=N-n+1; x++) {
 			for(int y=1; y<=N-n+1; y++) {
@@ -163,8 +163,8 @@ public class MazeRunner { // 메이즈러너
 			for(int j=1; j<=N; j++) {
 				if(cadidates[i][j]==null || cadidates[i][j].isEmpty()) continue;
 				// 4방향 모두 확인해서 최단 거리 가까운 곳으로 이동
-				System.out.println(exitX+" 출구는 ? "+exitY);
-				System.out.println(i+" 현재 위치 ? "+j);
+				//System.out.println(exitX+" 출구는 ? "+exitY);
+				//System.out.println(i+" 현재 위치 ? "+j);
 				boolean moving = false;
 				int minDist = Math.abs(exitX-i)+Math.abs(exitY-j);
 				int minX = i, minY = j;
@@ -177,7 +177,7 @@ public class MazeRunner { // 메이즈러너
 					minX = nx;
 					minY = ny;
 					minDist = currentDist;
-					System.out.println("d "+d +"  "+nx + "  "+ny+" currentDist "+ currentDist);
+					//System.out.println("d "+d +"  "+nx + "  "+ny+" currentDist "+ currentDist);
 					moving = true;
 				}
 				if(minX == exitX && minY == exitY) {
