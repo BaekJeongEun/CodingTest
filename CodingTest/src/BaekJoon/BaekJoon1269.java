@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-public class BaekJoon1269 { // 대칭 차집합 (S4)
+public class BaekJoon1269 { // 대칭 차집합(S4)
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
