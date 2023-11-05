@@ -49,6 +49,4 @@ public class BaekJoon1620 { // 나는야 포켓몬 마스터 이다솜(S4)
 	       return false;
 	   }
 	}
-	}
-
 }
