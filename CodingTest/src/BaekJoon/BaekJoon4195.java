@@ -1,50 +1,80 @@
 package BaekJoon;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 public class BaekJoon4195 { // 친구 네트워크 (G2)
-    static int F;
-    static HashMap<String, String> map;
-    static HashMap<String, Integer> count;
+	static int[] parent; 
+    static int[] level; 
+ 
     public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
         StringTokenizer st;
-        int TC = Integer.parseInt(br.readLine());
-        for (int tc = 1; tc <= TC; tc++) {
-            map = new HashMap<>();
-            count = new HashMap<>();
-            F = Integer.parseInt(br.readLine());
+ 
+        int T = Integer.parseInt(br.readLine());
+ 
+        StringBuilder sb = new StringBuilder();
+        while (T-- > 0) {
+            int F = Integer.parseInt(br.readLine());
+ 
+            parent = new int[F * 2];
+            level = new int[F * 2];
+            for (int i = 0; i < F * 2; i++) {
+                parent[i] = i;
+                level[i] = 1;
+            }
+ 
+            int idx = 0;
+            Map<String, Integer> map = new HashMap<>();
+ 
             for (int i = 0; i < F; i++) {
                 st = new StringTokenizer(br.readLine());
-                String first = st.nextToken();
-                String second = st.nextToken();
-                sb.append(union(first, second)+"\n");
+                String a = st.nextToken();
+                String b = st.nextToken();
+ 
+                if (!map.containsKey(a)) {
+                    map.put(a, idx++);
+                }
+ 
+                if (!map.containsKey(b)) {
+                    map.put(b, idx++);
+                }
+ 
+                sb.append(union(map.get(a), map.get(b)) + "\n");
             }
         }
-        System.out.println(sb.toString());
+ 
+        bw.write(sb.toString());
+        bw.flush();
+        bw.close();
+        br.close();
     }
-
-    private static int union(String first, String second) {
-        String firstP = find(first);
-        String secondP = find(second);
-        int firstCnt = count.getOrDefault(firstP, 1);
-        int secondCnt = count.getOrDefault(secondP, 1);
-        if (!firstP.equals(secondP)) { // 두 부모가 같지 않다면
-            count.put(firstP, firstCnt + secondCnt);
-            count.put(secondP, firstCnt + secondCnt);
-        }else count.put(firstP, firstCnt);
-        
-        map.put(firstP, secondP);
-        return count.get(find(first));
+ 
+    public static int find(int x) {
+        if (x == parent[x]) {
+            return x;
+        }
+ 
+        return parent[x] = find(parent[x]);
     }
-
-    private static String find(String cur) {
-        if (!map.containsKey(cur) || map.get(cur).equals(cur)) // 내 자신이 최상단
-            return cur;
-        return map.put(cur, find(map.get(cur))); // 현재 구하고자 하는 노드의 최상위 조상 찾기
+ 
+    public static int union(int x, int y) {
+        x = find(x);
+        y = find(y);
+ 
+        if (x != y) {
+            parent[y] = x;
+            level[x] += level[y]; 
+ 
+            level[y] = 1;
+        }
+ 
+        return level[x];
     }
 }
