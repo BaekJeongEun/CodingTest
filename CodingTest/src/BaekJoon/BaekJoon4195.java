@@ -11,7 +11,6 @@ import java.util.StringTokenizer;
 public class BaekJoon4195 { // 친구 네트워크 (G2)
 	static int[] parent; 
     static int[] level; 
- 
     public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
