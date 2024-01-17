@@ -9,14 +9,10 @@ public class BaekJoon11050 { // 이항 계수 1(B1)
 public static void main(String[] args) throws IOException {
 		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-		
+		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
- 
 		System.out.println(BC(N, K));
-		
 	}
 	
 	static int BC(int n, int k) {
