@@ -18,5 +18,4 @@ public class BaekJoon11727 { // 2×n 타일링 2(S3)
 
         System.out.println(dp[n]);
 	}
-
 }
