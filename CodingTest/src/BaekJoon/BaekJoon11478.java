@@ -1,8 +1,7 @@
 package BaekJoon;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class BaekJoon11478 { // 서로 다른 부분 문자열의 개수(S3)
 	public static void main(String[] args) throws IOException {
