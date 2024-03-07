@@ -32,12 +32,12 @@ public class BaekJoon1504 { // 특정한 최단 경로 (G4)
 		u = Integer.parseInt(st.nextToken());
 		v = Integer.parseInt(st.nextToken());
 		
-		int result1 = 0;
+		int result1 = 0; // 정점 0 ~ u ~ v ~ N 까지 최단경로
 		result1 += dijkstra(0, u-1);
 		result1 += dijkstra(u-1, v-1);
 		result1 += dijkstra(v-1, N-1);
 		
-		int result2 = 0;
+		int result2 = 0; // 정점 0 ~ v ~ u ~ N 까지 최단경로
 		result2 += dijkstra(0, v-1);
 		result2 += dijkstra(v-1, u-1);
 		result2 += dijkstra(u-1, N-1);
