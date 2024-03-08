@@ -46,15 +46,15 @@ public class BaekJoon1446 { // 지름길 (S1)
 		int[] visit = new int[10001];
 		Arrays.fill(visit, 10001);
 		int idx = 0, move = 0;
-		while (move < D) {
-			if(idx < arr.size()) {
+		while (move < D) { // 움직인 거리가 D보다 작을 경우
+			if(idx < arr.size()) { // 남은 지름길이 있다면
 				Point now = arr.get(idx);
-				if(move == now.from) {
-					visit[now.to] = Math.min(visit[move]+now.length, visit[now.to]);
-				}else {
+				if(move == now.from) { // 움직인 거리가 현재 지름길의 시작 위치라면
+					visit[now.to] = Math.min(visit[move]+now.length, visit[now.to]); // 현재 지름길의 도착지점을 현재까지 움직인 거리에 지름길 더한 것과 현재 지름길
+				}else { // 알맞은 지름길이 아니라면 1 이동
 					visit[move+1] = Math.min(visit[move+1], visit[move]+1);
 				}
-			}else {
+			}else { // 남은 지름길이 없다면
 				visit[move+1] = Math.min(visit[move+1], visit[move]+1);
 				move++;
 			}
