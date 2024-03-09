@@ -28,5 +28,6 @@ public class BaekJoon1049 { // 기타줄 (S4)
 		
 		min = Math.min(((N/6)+1)*manyArr[0], N*oneArr[0]);
 		min = Math.min(min, (N/6)*manyArr[0] + (N%6)*oneArr[0]);
+		System.out.println(min);
 	}
 }
