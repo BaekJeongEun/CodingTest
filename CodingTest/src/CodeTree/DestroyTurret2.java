@@ -4,16 +4,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.StringTokenizer;
 
-public class DestroyTurret2 { // 포탑 부수기
+public class DestroyTurret2 { // 포탑 부수기(G1)
 	static int N, M, K, time = 1, minTime = Integer.MAX_VALUE;
 	static int[][] dir = {{0,1},{1,0},{0,-1},{-1,0}, {1,1},{1,-1}, {-1, 1}, {-1,-1}};
-	static boolean[][] visit;
+	static int[][] visit;
 	static Turret[][] arr;
-	static ArrayList<Turret> list;
-	static ArrayList<int[]> pick;
+	static ArrayList<Turret> list, pick;
 	static Turret attacker, defender;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -33,8 +35,7 @@ public class DestroyTurret2 { // 포탑 부수기
 			}
 		}
 		while(K-- > 0) {
-			System.out.println("=================================================================== "+K);
-			// 부서지지 않은 포탑 1개뿐인지
+			//System.out.println("=================================================================== "+K);
 			if(checkMap()) {
 				break;
 			}
@@ -42,9 +43,8 @@ public class DestroyTurret2 { // 포탑 부수기
 			attacker = list.get(0);
 			defender = list.get(list.size()-1);
 
-			System.out.println("공격  "+attacker);
-			System.out.println("피해  "+defender);
-//			list.stream().forEach(System.out::println);
+			//System.out.println("공격  "+attacker);
+			//System.out.println("피해  "+defender);
 			// 공격자 선정
 			attacker.power += (N+M); // 공격력 증가
 			attacker.attackTime = time;
@@ -55,29 +55,24 @@ public class DestroyTurret2 { // 포탑 부수기
 			// 공격자의 공격
 			// (1) 레이저 공격
 			if(laser()) { // 레이저 도달 가능한지
-				// pick 리스트 공격
-				System.out.println("===============================laser ");
 				for(int i=0; i<pick.size(); i++) {
-					int x = pick.get(i)[0];
-					int y = pick.get(i)[1];
+					int x = pick.get(i).x;
+					int y = pick.get(i).y;
+					if(x == attacker.x && y == attacker.y) continue;
 					if(x == defender.x && y == defender.y) {
 						defender.power -= attacker.power;
 					}else {
 						arr[x][y].power -= attacker.power/2;
 						arr[x][y].attack = true;
 					}
-					System.out.println(x+" "+y);
 				}
 			}else { // (2) 포탄 공격
-				System.out.println("===============================bomb ");
 				bomb();
 			}
 			//print();
-			// 포탑 정비 (공격력 0이하가 된 포탑 null, 공격과 무관한 포탑은 공격력 1 상승)
-			System.out.println("===============================setTurret ");
 			setTurret();
 			time++;
-			print();
+			//print();
 		}
 		checkMap();
 		Collections.sort(list);
@@ -100,7 +95,10 @@ public class DestroyTurret2 { // 포탑 부수기
 					arr[i][j] = null;
 					continue;
 				}
-				if(arr[i][j].attack) continue;
+				if(arr[i][j].attack) { 
+					arr[i][j].attack = false;
+					continue;
+				}
 				arr[i][j].power++;
 			}
 		}
@@ -127,55 +125,64 @@ public class DestroyTurret2 { // 포탑 부수기
 	private static boolean laser() {
 		// 공격자에서 피해자까지 최단 경로 찾기
 		minTime = Integer.MAX_VALUE;
-		visit = new boolean[N][M];
+		visit = new int[N][M];
+		for(int i=0;i<visit.length;i++) {
+			Arrays.fill(visit[i], Integer.MAX_VALUE);
+		}
 		pick.clear();
-		visit[attacker.x][attacker.y] = true;
-		dfs(attacker.x, attacker.y, new ArrayList<int[]>(), 0);
-		return pick.size() > 1;
+		bfs();
+		return !pick.isEmpty();
 	}
 	
-	private static void dfs(int x, int y, ArrayList<int[]> target, int time) {
-		if(minTime < time) return;
-		if(x == defender.x && y == defender.y) {
-			if(minTime > time) { // 최단 경로라면
-				pick.clear();
-				pick.addAll(target);
-				minTime = time;
+	private static void bfs() {
+		Queue<Turret> q = new LinkedList<>();
+		q.add(new Turret(attacker.x, attacker.y, 0));
+		visit[attacker.x][attacker.y] = 0;
+		while(!q.isEmpty()) {
+			Turret now = q.poll();
+			int x = now.x;
+			int y = now.y;
+			int time = now.time;
+			if(minTime < time || visit[x][y] < time) {
+				break;
 			}
-			return;
-		}
-		for(int d=0; d<4; d++) {
-			int nx = x + dir[d][0];
-			int ny = y + dir[d][1];
-			if(nx<0) nx = N-1;
-			else if(nx>=N) nx = 0;
-			if(ny<0) ny = M-1;
-			else if(ny>=M) ny = 0;
-			if(arr[nx][ny] == null || visit[nx][ny]) continue; // 부서진 포탑 못 지남
-			visit[nx][ny] = true;
-			int[] next = new int[] {nx, ny};
-			target.add(next);
-			dfs(nx, ny, target, time+1);
-			target.remove(next);
-			visit[nx][ny] = false;
+			if(x == defender.x && y == defender.y) {
+				Turret temp = now;
+				while(temp !=null) {
+					pick.add(0, temp);
+					temp = temp.pre;
+				}
+				break;
+			}
+			for(int d=0; d<4; d++) {
+				int nx = x + dir[d][0];
+				int ny = y + dir[d][1];
+				if(nx<0) nx = N-1;
+				else if(nx>=N) nx = 0;
+				if(ny<0) ny = M-1;
+				else if(ny>=M) ny = 0;
+				if(arr[nx][ny] == null || visit[nx][ny] < time+1) continue; // 부서진 포탑 못 지남
+				visit[nx][ny] = time+1;
+				Turret next1 = new Turret(nx, ny, time+1);
+				next1.pre = now;
+				q.add(next1);
+			}
 		}
 	}
 	private static boolean checkMap() {
-		int alive = 0;
 		list.clear();
 		for(int i=0; i<N; i++) {
 			for(int j=0; j<M; j++) {
 				if(arr[i][j] != null) {
-					alive++;
 					list.add(arr[i][j]);
 				}
 			}
 		}
-//		System.out.println(alive+"!!!! ");
-		return alive == 1 ? true : false;
+		return list.size() == 1 ? true : false;
 	}
 	static class Turret implements Comparable<Turret>{
-		int x, y, power, attackTime;
+		int x, y, power, attackTime, time;
+		Turret pre;
 		boolean attack = false;
 		public Turret(int x, int y, int power, int attackTime, boolean attack) {
 			super();
@@ -184,6 +191,12 @@ public class DestroyTurret2 { // 포탑 부수기
 			this.power = power;
 			this.attackTime = attackTime;
 			this.attack = attack;
+		}
+		public Turret(int x, int y, int time) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.time = time;
 		}
 		@Override
 		public int compareTo(Turret o) {
