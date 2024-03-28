@@ -3,15 +3,14 @@ package Softeer;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
 import java.util.StringTokenizer;
 
-public class BaseSequenceCover { // 염기서열 커버(L3)
-	static int N, M;
+public class BaseSequenceCover {
+	static int N, M, count;
 	static char[][] arr;
-	static char[] pick;
-	static Set<String> set;
+	static char[] pick, sequence = {'a','c','g','t'};
+	static HashMap<String, Integer> map;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());		
@@ -22,34 +21,35 @@ public class BaseSequenceCover { // 염기서열 커버(L3)
 			arr[i] = br.readLine().toCharArray();
 		}
 		pick = new char[M];
-		set = new HashSet();
-		comb(0, 0, 0);
-		System.out.println(set.size());
+		map = new HashMap<>();
+		comb(0);
+		System.out.println(map.size());
 	}
-	private static void comb(int x, int y, int cnt) {
+	private static void comb(int cnt) {
 		if(cnt == M) {
+			count = 0;
 			if(valid()) {
-				set.add(String.valueOf(pick));
+				map.put(String.valueOf(pick), count);
 			}
 			return;
 		}
-		for(int j=y; j<M; j++) {
-			for(int i=x; i<N; i++) {
-				if(arr[i][j] == '.') continue;
-				pick[cnt] = arr[i][j];
-				comb(i, j+1, cnt+1);
-			}
+		for(int i=0; i<4; i++) {
+			pick[cnt] = sequence[i];
+			comb(cnt+1);
 		}
 	}
 	private static boolean valid() {
 		for(int i=0; i<N; i++) {
+			boolean success = true;
 			for(int j=0; j<M; j++) {
-				if(arr[i][j] != '.' && arr[i][j] != pick[j]) {
-					return false;
+				if(arr[i][j] != '.' && (arr[i][j] != pick[j])) {
+					success = false;
 				}
 			}
+			if(success) {
+				count++;
+			}
 		}
-		return true;
+		return count==0?false:true;
 	}
-
 }
