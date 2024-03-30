@@ -6,33 +6,28 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class BaekJoon9095 { // 1, 2, 3 더하기 2 (S1)
-    static int N, K;
-    static ArrayList<String> list = new ArrayList<>();
+public class BaekJoon9095 { // 1, 2, 3 더하기 2 (S3)
+    static int N, T, answer;
     static int[] pick;
     public static void main(String[] args) throws NumberFormatException, IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
-        N = Integer.parseInt(st.nextToken());
-        K = Integer.parseInt(st.nextToken());
+        StringBuilder sb = new StringBuilder();
+        T = Integer.parseInt(br.readLine());
         
-        pick = new int[N];
-        comb(0, 0);
+        for(int i=0; i<T; i++) {
+        	N = Integer.parseInt(br.readLine());
+        	pick = new int[N];
+        	answer = 0;
+            comb(0, 0);
+            sb.append(answer).append("\n");
+        }
         
-        System.out.println((list.size() >= K)?list.get(K-1):"-1");
+        System.out.println(sb.toString());
         
     }
     private static void comb(int cnt, int sum) {
         if(sum == N) {
-            StringBuilder sb = new StringBuilder();
-            int i=0;
-            for(i=0; i<pick.length; i++) {
-                if(pick[i] == 0) break;
-                sb.append(pick[i]);
-                sb.append("+");
-            }
-            
-            list.add(sb.toString().substring(0, sb.toString().length()-1));
+        	answer++;
             return;
         }
         for(int i=1; i<=3; i++) {
