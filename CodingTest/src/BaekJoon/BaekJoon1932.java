@@ -5,28 +5,32 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-public class BaekJoon1932 { // 수학은 비대면강의입니다
+public class BaekJoon1932 { // 정수 삼각형(S1)
 
 	public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        int N = Integer.parseInt(br.readLine());
+        StringTokenizer st = null;
+
+        int[][] arr = new int[N+1][N+1];
+        int[][] dp = new int[N+1][N+1];
         
-        int a = Integer.parseInt(st.nextToken());
-        int b = Integer.parseInt(st.nextToken());
-        int c = Integer.parseInt(st.nextToken());
-        int d = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-        int f = Integer.parseInt(st.nextToken());
-        
-        int x=-1, y=-1;
-        for(x=-999; x<=999; x++) {
-        	for(y=-999; y<=999; y++) {
-        		if(a*x + b*y == c && d*x + e*y ==f) {
-        			System.out.println(x+" "+y);
-        			return;
-        		}
+        for(int i=1; i<=N; i++) {
+			st = new StringTokenizer(br.readLine());
+			for(int j=1; j<=i; j++) {
+				arr[i][j] = Integer.parseInt(st.nextToken());
+			}
+		}
+        for(int i=1; i<=N; i++) {
+        	for(int j=1; j<=N; j++) {
+        		dp[i][j] = Math.max(dp[i-1][j-1], dp[i-1][j])+arr[i][j];
         	}
         }
+        int ans=0;
+		for(int i=1; i<=N; i++) {
+			if(ans < dp[N][i]) ans = dp[N][i]; 
+		}
+        System.out.println(ans);
 	}
 
 }
