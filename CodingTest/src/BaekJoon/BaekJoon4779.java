@@ -1,34 +1,28 @@
 package BaekJoon;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.util.Arrays;
-import java.util.StringTokenizer;
 
-public class BaekJoon4779 {
+public class BaekJoon4779 { // 칸토어 집합(S3)
 	static char[] lineArr;
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-		StringTokenizer st = new StringTokenizer(br.readLine());
 		StringBuilder sb = null;
-		while(st.hasMoreTokens()) {
+		String input = null;
+		while((input = br.readLine()) !=null) {
 			sb = new StringBuilder();
-			int N = Integer.parseInt(st.nextToken());
+			int N = Integer.parseInt(input);
 			int len = (int) Math.pow(3, N);
-			lineArr = new char[len]; //3의 N승 만큼의 크기를 가진 배열
+			lineArr = new char[len];
             Arrays.fill(lineArr, '-');
 			recur(0,len);
 			for(int i = 0; i < lineArr.length; i++){
                 sb.append(lineArr[i]);
             }
-			bw.write(sb.toString());
+			System.out.println(sb);
 		}
-		bw.flush();
-		bw.close();
 	}
 
 	private static void recur(int start, int len) {
